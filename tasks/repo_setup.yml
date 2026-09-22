@@ -1,4 +1,3 @@
----
 - name: Ensure Zabbix packages are excluded from EPEL repository
   ansible.builtin.ini_file:
     path: /etc/yum.repos.d/epel.repo
@@ -14,6 +13,11 @@
 
 - name: Attempt to install Zabbix Repo (With Offline Fallback)
   block:
+    - name: Import the Zabbix GPG key
+      ansible.builtin.rpm_key:
+        key: https://repo.zabbix.com/zabbix-official-repo.key
+        state: present
+
     - name: Try to install Zabbix 8.0 Release Repository via Internet
       ansible.builtin.dnf:
         name: "{{ zabbix_repo_url }}"
