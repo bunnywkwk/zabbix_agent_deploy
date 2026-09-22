@@ -1,4 +1,10 @@
 ---
+- name: Ensure the acl package is installed (setfacl/getfacl)
+  ansible.builtin.dnf:
+    name: acl
+    state: present
+    disablerepo: epel
+
 # Shared by Host Access and Privileged Activity: both read
 # /var/log/audit/audit.log. auditd owns file rotation, so access is
 # granted through auditd's own log_group directive rather than a file ACL
@@ -7,7 +13,7 @@
   ansible.builtin.lineinfile:
     path: /etc/audit/auditd.conf
     regexp: '^log_group\s*='
-    line: 'log_group = zabbix'
+    line: "log_group = zabbix"
     state: present
   notify: Restart auditd
 
