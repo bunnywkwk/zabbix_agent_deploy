@@ -1,9 +1,6 @@
 ---
-- name: Ensure the acl package is installed (setfacl/getfacl)
-  ansible.builtin.dnf:
-    name: acl
-    state: present
-    disablerepo: epel
+- name: Ensure ACL support is available
+  ansible.builtin.include_tasks: ensure_acl_support.yml
 
 # Shared by Host Access and Privileged Activity: both read
 # /var/log/audit/audit.log. auditd owns file rotation, so access is

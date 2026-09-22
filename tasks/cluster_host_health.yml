@@ -1,14 +1,10 @@
 ---
-# setfacl/getfacl come from the acl package, which isn't guaranteed to be
-# present on a minimal RHEL 9/10 install - ansible.posix.acl shells out to
-# the setfacl binary, so it has to exist first. disablerepo: epel for the
-# same reason as the install tasks - EPEL's baseurl is broken in this
-# environment and would otherwise fail this dnf call too.
-- name: Ensure the acl package is installed (setfacl/getfacl)
-  ansible.builtin.dnf:
-    name: acl
-    state: present
-    disablerepo: epel
+# Grants the zabbix user read-only access to /var/log/messages via ACL,
+# for the Host Health cluster's log-based items (kernel errors, OOM,
+# lifecycle events, boot outcome). Root keeps ownership; no group change,
+# no world-readable bit, so nothing else on the host gains access.
+- name: Ensure ACL support is available
+  ansible.builtin.include_tasks: ensure_acl_support.yml
 
 - name: Grant zabbix read access to /var/log/messages (Host Health cluster)
   ansible.posix.acl:
