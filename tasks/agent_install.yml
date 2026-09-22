@@ -1,0 +1,23 @@
+---
+- name: Attempt to install Zabbix Agent 2 (With Offline Fallback)
+  block:
+    - name: Ensure Zabbix Agent 2 is installed via Internet
+      ansible.builtin.dnf:
+        name: zabbix-agent2
+        state: present
+
+  rescue:
+    - name: Internet failed - Pushing actual offline Agent RPM to /usr/local/src/
+      ansible.builtin.copy:
+        src: "zabbix-agent2-8.0-beta-rhel{{ ansible_distribution_major_version }}.rpm"
+        dest: "/usr/local/src/zabbix-agent2-8.0-beta.rpm"
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Install Zabbix Agent 2 locally from staging directory
+      ansible.builtin.dnf:
+        name: "/usr/local/src/zabbix-agent2-8.0-beta.rpm"
+        state: present
+        disablerepo: "*"
+        disable_gpg_check: yes

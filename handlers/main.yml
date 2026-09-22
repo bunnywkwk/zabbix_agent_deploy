@@ -1,0 +1,9 @@
+---
+- name: Restart Zabbix Agent 2
+  ansible.builtin.systemd:
+    name: zabbix-agent2
+    state: restarted
+
+- name: Restart auditd
+  ansible.builtin.command: service auditd restart
+  changed_when: true

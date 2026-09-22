@@ -1,0 +1,13 @@
+# =======================================================
+# MANAGED BY ANSIBLE - DO NOT EDIT MANUALLY
+# This drop-in file overrides the main zabbix_agent2.conf
+# =======================================================
+
+# Point to the Zabbix Server (For Passive Checks)
+Server={{ zabbix_server_ip }}
+
+# Point to the Zabbix Server (For Active Checks)
+ServerActive={{ zabbix_server_ip }}
+
+# Automatically inject the exact Linux Hostname
+Hostname={{ inventory_hostname }}

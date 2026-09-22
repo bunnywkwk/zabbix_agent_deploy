@@ -1,0 +1,37 @@
+---
+# Deploys the Podman status script, its UserParameter config and its
+# sudoers grant for the Containers cluster. The script is root-owned so a
+# compromised agent process can't rewrite what it's allowed to run as root.
+- name: Ensure Zabbix custom scripts directory exists
+  ansible.builtin.file:
+    path: /etc/zabbix/scripts
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Deploy Podman status collection script (Containers cluster)
+  ansible.builtin.copy:
+    src: podman_status.sh
+    dest: /etc/zabbix/scripts/podman_status.sh
+    owner: root
+    group: zabbix
+    mode: '0750'
+
+- name: Deploy Podman UserParameter config (Containers cluster)
+  ansible.builtin.copy:
+    src: zabbix_podman.conf
+    dest: /etc/zabbix/zabbix_agent2.d/zabbix_podman.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Zabbix Agent 2
+
+- name: Grant zabbix least-privilege sudo access to podman (Containers cluster)
+  ansible.builtin.copy:
+    src: zabbix_podman.sudoers
+    dest: /etc/sudoers.d/zabbix_podman
+    owner: root
+    group: root
+    mode: '0440'
+    validate: 'visudo -cf %s'

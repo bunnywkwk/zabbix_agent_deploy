@@ -1,0 +1,6 @@
+# /etc/sudoers.d/zabbix_podman   (mode 0440, owner root:root)
+#
+# Least privilege: three exact commands, no wildcards.
+# The Zabbix agent can read container state and cannot create, start, stop,
+# remove or modify a container, an image or a volume.
+zabbix ALL=(root) NOPASSWD: /usr/bin/podman ps -a --format json, /usr/bin/podman stats --no-stream --format json, /usr/bin/podman system df --format json

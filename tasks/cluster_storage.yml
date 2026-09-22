@@ -1,0 +1,20 @@
+---
+# Deploys the LVM UserParameters and their matching sudoers grant for the
+# Storage & Filesystem cluster.
+- name: Deploy LVM UserParameter config (Storage cluster)
+  ansible.builtin.copy:
+    src: zabbix_lvm.conf
+    dest: /etc/zabbix/zabbix_agent2.d/zabbix_lvm.conf
+    owner: root
+    group: root
+    mode: '0644'
+  notify: Restart Zabbix Agent 2
+
+- name: Grant zabbix least-privilege sudo access to vgs (Storage cluster)
+  ansible.builtin.copy:
+    src: zabbix_lvm.sudoers
+    dest: /etc/sudoers.d/zabbix_lvm
+    owner: root
+    group: root
+    mode: '0440'
+    validate: 'visudo -cf %s'

@@ -1,0 +1,12 @@
+---
+# Grants the zabbix user read-only access to /var/log/messages via ACL,
+# for the Host Health cluster's log-based items (kernel errors, OOM,
+# lifecycle events, boot outcome). Root keeps ownership; no group change,
+# no world-readable bit, so nothing else on the host gains access.
+- name: Grant zabbix read access to /var/log/messages (Host Health cluster)
+  ansible.posix.acl:
+    path: /var/log/messages
+    entity: zabbix
+    etype: user
+    permissions: r
+    state: present

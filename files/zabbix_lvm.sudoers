@@ -1,0 +1,6 @@
+# /etc/sudoers.d/zabbix_lvm   (mode 0440, owner root:root)
+#
+# Least privilege: exact vgs report invocations. The VG name argument is
+# dynamic ($1 above), so those two entries carry a trailing wildcard; none
+# of these can create, extend, remove or modify a Volume Group.
+zabbix ALL=(root) NOPASSWD: /usr/sbin/vgs --noheadings -o vg_name, /usr/sbin/vgs --noheadings --units b -o vg_size *, /usr/sbin/vgs --noheadings --units b -o vg_free *

@@ -1,0 +1,9 @@
+---
+# Fallback default variables
+zabbix_server_ip: "192.168.10.160"
+
+# Which requirement-cluster templates this host is monitored under.
+# Drives which UserParameter configs, sudoers grants and log permissions
+# get deployed below. Valid values: host_health, storage, virtualisation,
+# containers, host_access, privileged_activity
+zabbix_agent_clusters: []

@@ -1,0 +1,13 @@
+---
+- name: Ensure firewalld allows Zabbix Agent port 10050
+  ansible.posix.firewalld:
+    port: 10050/tcp
+    permanent: yes
+    immediate: yes
+    state: enabled
+
+- name: Ensure Zabbix Agent 2 is enabled and running
+  ansible.builtin.systemd:
+    name: zabbix-agent2
+    state: started
+    enabled: yes

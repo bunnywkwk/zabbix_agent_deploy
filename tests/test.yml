@@ -1,0 +1,10 @@
+---
+- name: Technical Integration Test for Zabbix Agent Role
+  hosts: zabbix_agents
+  become: true
+  gather_facts: true
+
+  tasks:
+    - name: Test the zabbix_agent_deploy role
+      ansible.builtin.include_role:
+        name: zabbix_agent_deploy

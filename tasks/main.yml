@@ -1,0 +1,15 @@
+---
+- name: Set up the Zabbix package repository
+  ansible.builtin.include_tasks: repo_setup.yml
+
+- name: Install the Zabbix Agent 2 package
+  ansible.builtin.include_tasks: agent_install.yml
+
+- name: Deploy the base agent configuration
+  ansible.builtin.include_tasks: agent_config.yml
+
+- name: Configure per-cluster monitoring access on this host
+  ansible.builtin.include_tasks: cluster_access.yml
+
+- name: Enable and start the Zabbix Agent 2 service
+  ansible.builtin.include_tasks: service_enable.yml

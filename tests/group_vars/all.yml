@@ -1,0 +1,4 @@
+---
+# Variables defined here apply to all test hosts. 
+# This prevents hardcoding IPs in the playbook!
+zabbix_server_ip: "192.168.20.10"

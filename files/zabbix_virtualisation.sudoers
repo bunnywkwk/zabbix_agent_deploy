@@ -1,0 +1,6 @@
+# /etc/sudoers.d/zabbix_virtualisation   (mode 0440, owner root:root)
+#
+# Least privilege: read-only virsh subcommands only. The VM/pool name
+# argument is dynamic, so those entries carry a trailing wildcard; none of
+# these can create, start, stop, delete or modify a domain, pool or snapshot.
+zabbix ALL=(root) NOPASSWD: /usr/bin/virsh list --all --name, /usr/bin/virsh domstate *, /usr/bin/virsh domstats * --cpu-total, /usr/bin/virsh domstats * --balloon, /usr/bin/virsh domstats * --block, /usr/bin/virsh pool-list --all --name, /usr/bin/virsh pool-info * --bytes, /usr/bin/virsh snapshot-list * --name

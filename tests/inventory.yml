@@ -1,0 +1,13 @@
+---
+all:
+  children:
+    zabbix_agents:
+      hosts:
+        rhel9-hardened:
+          ansible_host: 192.168.20.40
+          ansible_user: frqadmin
+          ansible_ssh_common_args: '-o ProxyJump=frqadmin@192.168.10.160'
+        rhel10-hardened:
+          ansible_host: 192.168.20.30
+          ansible_user: frqadmin
+          ansible_ssh_common_args: '-o ProxyJump=frqadmin@192.168.10.160'

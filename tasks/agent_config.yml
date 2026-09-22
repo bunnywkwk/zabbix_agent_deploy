@@ -1,0 +1,17 @@
+---
+- name: Ensure Zabbix drop-in directory exists
+  ansible.builtin.file:
+    path: /etc/zabbix/zabbix_agent2.d
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Deploy the Zabbix Drop-In Configuration File
+  ansible.builtin.template:
+    src: server-connection.conf.j2
+    dest: /etc/zabbix/zabbix_agent2.d/server-connection.conf
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart Zabbix Agent 2

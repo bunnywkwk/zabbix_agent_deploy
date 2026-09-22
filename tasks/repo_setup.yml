@@ -1,0 +1,36 @@
+---
+- name: Ensure Zabbix packages are excluded from EPEL repository
+  ansible.builtin.ini_file:
+    path: /etc/yum.repos.d/epel.repo
+    section: epel
+    option: excludepkgs
+    value: "zabbix*"
+    state: present
+  ignore_errors: yes
+
+- name: Construct Zabbix Release RPM URL based on RHEL version
+  ansible.builtin.set_fact:
+    zabbix_repo_url: "https://repo.zabbix.com/zabbix/8.0/release/rhel/{{ ansible_distribution_major_version }}/noarch/zabbix-release-latest-8.0.el{{ ansible_distribution_major_version }}.noarch.rpm"
+
+- name: Attempt to install Zabbix Repo (With Offline Fallback)
+  block:
+    - name: Try to install Zabbix 8.0 Release Repository via Internet
+      ansible.builtin.dnf:
+        name: "{{ zabbix_repo_url }}"
+        state: present
+
+  rescue:
+    - name: Internet failed - Pushing offline Repo RPM to /usr/local/src/
+      ansible.builtin.copy:
+        src: "zabbix-release-latest-8.0.el{{ ansible_distribution_major_version }}.noarch.rpm"
+        dest: "/usr/local/src/zabbix-release-latest-8.0.el{{ ansible_distribution_major_version }}.noarch.rpm"
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Install Zabbix Release Repo locally from staging directory
+      ansible.builtin.dnf:
+        name: "/usr/local/src/zabbix-release-latest-8.0.el{{ ansible_distribution_major_version }}.noarch.rpm"
+        state: present
+        disablerepo: "*"
+        disable_gpg_check: yes

@@ -1,0 +1,20 @@
+---
+- name: Configure Host Health log access
+  ansible.builtin.include_tasks: cluster_host_health.yml
+  when: "'host_health' in zabbix_agent_clusters"
+
+- name: Configure Storage cluster access
+  ansible.builtin.include_tasks: cluster_storage.yml
+  when: "'storage' in zabbix_agent_clusters"
+
+- name: Configure Virtualisation cluster access
+  ansible.builtin.include_tasks: cluster_virtualisation.yml
+  when: "'virtualisation' in zabbix_agent_clusters"
+
+- name: Configure Containers cluster access
+  ansible.builtin.include_tasks: cluster_containers.yml
+  when: "'containers' in zabbix_agent_clusters"
+
+- name: Configure audit-based log access (Host Access / Privileged Activity)
+  ansible.builtin.include_tasks: cluster_audit_access.yml
+  when: "'host_access' in zabbix_agent_clusters or 'privileged_activity' in zabbix_agent_clusters"

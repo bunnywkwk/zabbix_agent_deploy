@@ -1,0 +1,23 @@
+---
+# Shared by Host Access and Privileged Activity: both read
+# /var/log/audit/audit.log. auditd owns file rotation, so access is
+# granted through auditd's own log_group directive rather than a file ACL
+# (an ACL would be silently dropped on the next rotation).
+- name: Ensure auditd hands audit.log group ownership to zabbix
+  ansible.builtin.lineinfile:
+    path: /etc/audit/auditd.conf
+    regexp: '^log_group\s*='
+    line: 'log_group = zabbix'
+    state: present
+  notify: Restart auditd
+
+# /var/log/audit is 0700/0750 root:root, so group-read on the file alone
+# isn't enough to reach it. Execute-only lets the agent traverse to the
+# known filename without being able to list the directory's contents.
+- name: Grant zabbix execute (traverse) access to /var/log/audit directory
+  ansible.posix.acl:
+    path: /var/log/audit
+    entity: zabbix
+    etype: user
+    permissions: x
+    state: present
