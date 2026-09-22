@@ -18,6 +18,7 @@
       ansible.builtin.dnf:
         name: "{{ zabbix_repo_url }}"
         state: present
+        disablerepo: epel
 
   rescue:
     - name: Internet failed - Pushing offline Repo RPM to /usr/local/src/

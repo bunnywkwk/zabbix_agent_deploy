@@ -5,6 +5,7 @@
       ansible.builtin.dnf:
         name: zabbix-agent2
         state: present
+        disablerepo: epe;
 
   rescue:
     - name: Internet failed - Pushing actual offline Agent RPM to /usr/local/src/
