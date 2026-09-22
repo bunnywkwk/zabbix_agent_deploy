@@ -1,11 +1,11 @@
-# Offline-fallback RPM binaries for zabbix_agent_deploy (~13MB, 4 files).
+# Offline-fallback RPM binaries (~13MB, 4 files).
 # Not tracked in git. Before running this role against an air-gapped host,
-# manually place these in zabbix_agent_deploy/files/:
+# manually place these in files/:
 #   zabbix-release-latest-8.0.el9.noarch.rpm
 #   zabbix-release-latest-8.0.el10.noarch.rpm
 #   zabbix-agent2-8.0-beta-rhel9.rpm
 #   zabbix-agent2-8.0-beta-rhel10.rpm
-zabbix_agent_deploy/files/*.rpm
+files/*.rpm
 
 # Ansible runtime artifacts
 *.retry
