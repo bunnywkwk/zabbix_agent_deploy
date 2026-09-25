@@ -19,13 +19,11 @@ Purpose & Approach
 
 The role does three things, in order:
 
-1. **Installs Zabbix Agent 2.** Tries the internet-facing Zabbix 8.0
-   repository first; if that fails (air-gapped host), falls back to
-   locally staged offline RPMs pushed from the control node. See
-   `docs/Air_Gapped_Troubleshooting_Log.md` for why the offline path needs
-   `disablerepo: "*"` and `disable_gpg_check: yes` together, and why that's
-   safe here specifically (the RPMs were verified over HTTPS from
-   `repo.zabbix.com` before being staged).
+1. **Installs Zabbix Agent 2.** Imports Zabbix's GPG key, installs the
+   Zabbix 8.0 release-repository RPM from `repo.zabbix.com`, then
+   installs `zabbix-agent2` from it. The target host needs internet
+   access to `repo.zabbix.com`; there is no offline fallback (removed —
+   see `docs/Air_Gapped_Troubleshooting_Log.md` for the history).
 
 2. **Points the agent at the Zabbix server.** Deploys a drop-in config
    (`server-connection.conf.j2`) under `/etc/zabbix/zabbix_agent2.d/`
@@ -61,16 +59,13 @@ The role does three things, in order:
 Requirements
 ------------
 
-- RHEL 9 or RHEL 10 target host (the repo URL and offline RPM filenames
-  are built from `ansible_distribution_major_version`).
+- RHEL 9 or RHEL 10 target host with internet access to
+  `repo.zabbix.com` and its normal RHEL repositories (the repo URL is
+  built from `ansible_distribution_major_version`).
 - `become: yes` — every task in this role requires root.
 - The `ansible.posix` collection (`acl` and `firewalld` modules).
 - The `community.zabbix` collection is **not** required by this role —
   that's only needed by `zabbix_template_deploy` / `zabbix_host_link`.
-- For air-gapped targets: the 4 offline RPMs must be present in
-  `files/` before running. They're gitignored (~13MB, don't belong in
-  git history) — see `.gitignore` for the exact filenames and where to
-  source them from.
 
 Role Variables
 ---------------

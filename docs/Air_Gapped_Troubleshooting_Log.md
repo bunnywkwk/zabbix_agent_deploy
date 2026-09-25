@@ -1,5 +1,12 @@
 # Air-Gapped Zabbix Agent Deployment: Engineering Justification
 
+> **Historical — no longer how the role works.** The block/rescue
+> offline fallback described below was removed when the target hosts
+> became fresh RHEL 9.x / 10.1 machines with internet access. The role
+> now installs from `repo.zabbix.com` only. Kept as a record of why the
+> offline path needed `disablerepo: "*"` together with
+> `disable_gpg_check: yes`, in case an air-gapped host ever comes back.
+
 This document provides a quick and concise justification for the deployment configurations used to install Zabbix Agent 2 on fully air-gapped, CIS-hardened RHEL 9 and 10 hypervisors.
 
 ### 1. Dynamic Environment Support (Block/Rescue Pattern)

@@ -1,18 +1,8 @@
 ---
-# Shared by any cluster task that needs ansible.posix.acl (currently
-# host_health and the audit-based clusters). setfacl/getfacl come from
-# the acl package, not guaranteed present on a minimal RHEL 9/10 install
-# - and with gpgcheck on, the distro's own GPG key has to be trusted
-# before dnf can install anything fresh from its repo, if it isn't
-# already.
-- name: Import the distro GPG key
-  ansible.builtin.rpm_key:
-    key: /etc/pki/rpm-gpg/RPM-GPG-KEY-redhat-release
-    state: present
-
+# Shared by the clusters that use ansible.posix.acl (host_health and the
+# audit-based ones). setfacl/getfacl come from the acl package, which is
+# not on every fresh install (e.g. RHEL 10.1 minimal).
 - name: Ensure the acl package is installed (setfacl/getfacl)
   ansible.builtin.dnf:
     name: acl
     state: present
-    disablerepo: epel
-    disable_gpg_check: yes

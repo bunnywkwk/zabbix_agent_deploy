@@ -1,10 +1,5 @@
-# Offline-fallback RPM binaries (~13MB, 4 files).
-# Not tracked in git. Before running this role against an air-gapped host,
-# manually place these in files/:
-#   zabbix-release-latest-8.0.el9.noarch.rpm
-#   zabbix-release-latest-8.0.el10.noarch.rpm
-#   zabbix-agent2-8.0-beta-rhel9.rpm
-#   zabbix-agent2-8.0-beta-rhel10.rpm
+# Old offline-fallback RPM binaries (~13MB, 4 files). No longer used by
+# the role (internet install only); safe to delete the files and this rule.
 files/*.rpm
 
 # Ansible runtime artifacts
